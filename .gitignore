@@ -1,0 +1,16 @@
+.Rhistory
+.RData
+.Rproj.user
+.Renviron
+.Renviron.local
+.Renviron.site
+/.Rproj.user/
+/renv/library/
+/renv/staging/
+/renv/cache/
+/output/
+/data/raw/
+/data/processed/
+/*.Rproj
+.Renviron
+.DS_Store
