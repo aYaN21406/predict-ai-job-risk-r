@@ -1,0 +1,60 @@
+---
+title: "Predicting AI Job Automation Risk - Report"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+source("R/utils.R")
+```
+
+# Summary
+
+This report shows pipeline results for AI automation risk analysis across software engineering roles.
+
+# Data
+
+```{r}
+occ <- readr::read_csv("data/processed/occupations_features.csv", show_col_types = FALSE)
+head(occ)
+```
+
+# Top Risky Roles
+
+```{r}
+occ %>% arrange(desc(risk_score)) %>% head(10) %>% knitr::kable()
+```
+
+# Visualizations
+
+```{r, fig.width=10, fig.height=6}
+occ %>%
+  ggplot(aes(x = reorder(job, risk_score), y = risk_score)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "AI Automation Risk by Role", x = "", y = "Risk Score") +
+  theme_minimal()
+```
+
+# Model Performance
+
+```{r}
+if(file.exists("output/model_metrics.csv")) {
+  metrics <- readr::read_csv("output/model_metrics.csv", show_col_types = FALSE)
+  knitr::kable(metrics)
+} else {
+  cat("Model metrics not available. Run 04_modeling.R first.")
+}
+```
+
+# Conclusion
+
+- AI automation risk varies significantly across software roles
+- Roles with higher routine task shares and higher AI capability scores face greater risk
+- Skills development and upskilling are recommended to mitigate automation exposure
